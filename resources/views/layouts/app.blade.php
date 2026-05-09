@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'File d\'Attente ESPRIT')</title>
+    <title>@yield('title', 'SmartQueue - Gestion de Files d\'Attente')</title>
 
     <!-- Tailwind CSS -->
     @vite('resources/css/app.css')
@@ -19,7 +19,7 @@
                     <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/20">
                         <i class="fas fa-ticket-alt"></i>
                     </span>
-                    <span>ESPRIT File d'Attente</span>
+                    <span>SmartQueue</span>
                 </a>
 
                 <nav class="hidden items-center gap-4 md:flex">
@@ -27,7 +27,7 @@
                     <a href="{{ route('about') }}" class="nav-link">À propos</a>
                     <a href="{{ route('contact') }}" class="nav-link">Contact</a>
                     @auth
-                        <a href="{{ route('admin.tickets.index') }}" class="nav-link">Admin</a>
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link">Admin</a>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button type="submit" class="nav-link">Déconnexion</button>
@@ -76,8 +76,8 @@
         <footer class="border-t border-slate-200/80 bg-white/95 py-8">
             <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
                 <div>
-                    <p class="text-sm font-semibold text-slate-900">ESPRIT File d'Attente</p>
-                    <p class="mt-2 max-w-xl text-sm text-slate-500">Gestion moderne des tickets, notifications et suivi en temps réel pour une expérience client fluide.</p>
+                    <p class="text-sm font-semibold text-slate-900">SmartQueue</p>
+                    <p class="mt-2 max-w-xl text-sm text-slate-500">Système moderne de gestion de files d'attente bancaires avec notifications temps réel.</p>
                 </div>
                 <div class="flex flex-wrap gap-3 text-sm text-slate-500">
                     <a href="{{ route('about') }}" class="transition hover:text-indigo-600">À propos</a>

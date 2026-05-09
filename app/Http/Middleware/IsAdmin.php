@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class IsAdmin
@@ -17,7 +18,7 @@ class IsAdmin
     {
         // Simple check: assume admin if user is authenticated and has admin role
         // In a real app, check user role
-        if (!auth()->check() || !auth()->user()->is_admin) {
+        if (!Auth::check() || !Auth::user()->is_admin) {
             abort(403, 'Accès refusé. Vous devez être administrateur.');
         }
 

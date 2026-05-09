@@ -15,10 +15,56 @@ class TicketController extends Controller
     /**
      * Afficher la liste des tickets
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Ticket::with('service')->latest()->paginate(10);
-        return view('tickets.index', compact('tickets'));
+        $query = Ticket::with('service')->latest();
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($sub) use ($search) {
+                $sub->where('ticket_number', 'like', "%{$search}%")
+                    ->orWhere('full_name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhereHas('service', function ($serviceQuery) use ($search) {
+                        $serviceQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($status = $request->input('status')) {
+            $statusMap = [
+                'pending' => 'pending',
+                'serving' => 'serving',
+                'completed' => 'completed',
+                'canceled' => 'canceled',
+            ];
+            if (isset($statusMap[$status])) {
+                $query->where('status', $statusMap[$status]);
+            }
+        }
+
+        $tickets = $query->paginate(12)->withQueryString();
+
+        $stats = [
+            'total' => Ticket::count(),
+            'pending' => Ticket::where('status', 'pending')->count(),
+            'serving' => Ticket::where('status', 'serving')->count(),
+            'completed' => Ticket::where('status', 'completed')->count(),
+        ];
+
+        return view('tickets.index', compact('tickets', 'stats'));
+    }
+
+    public function update(Request $request, Ticket $ticket)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,serving,completed,canceled',
+            'priority' => 'required|in:normal,urgent',
+        ]);
+
+        $ticket->update($validated);
+
+        return redirect()->route('admin.tickets.index')
+            ->with('success', "Le ticket {$ticket->ticket_number} a été mis à jour.");
     }
 
     /**
@@ -46,13 +92,7 @@ class TicketController extends Controller
         // Générer un numéro de ticket unique
         $ticketNumber = 'TKT-' . strtoupper(substr(uniqid(), -6));
 
-        // Calculer le temps d'attente estimé
-        $waitingTickets = Ticket::where('service_id', $request->service_id)
-            ->whereIn('status', ['pending', 'serving'])
-            ->count();
-
-        $estimatedTime = $waitingTickets * 5; // 5 minutes par ticket
-
+        // Créer le ticket avec une estimation provisoire, puis recalculer la file entière
         $ticket = Ticket::create([
             'ticket_number' => $ticketNumber,
             'full_name' => $validated['full_name'],
@@ -62,8 +102,11 @@ class TicketController extends Controller
             'service_id' => $validated['service_id'],
             'status' => 'pending',
             'priority' => 'normal',
-            'estimated_wait_time' => $estimatedTime,
+            'estimated_wait_time' => 0,
         ]);
+
+        $this->recalculateEstimatedWaitTimes($ticket->service_id);
+        $ticket->refresh();
 
         Mail::to($ticket->email)->send(new TicketCreated($ticket));
 
@@ -91,15 +134,14 @@ class TicketController extends Controller
      */
     public function serve(Ticket $ticket)
     {
-        $ticket->update([
-            'status' => 'serving',
-            'started_at' => now(),
-        ]);
-
         Mail::to($ticket->email)->send(new TicketTurnNotification($ticket));
 
+        $serviceId = $ticket->service_id;
+        $ticket->delete();
+        $this->recalculateEstimatedWaitTimes($serviceId);
+
         return redirect()->route('admin.tickets.index')
-            ->with('success', "Le ticket {$ticket->ticket_number} est maintenant en cours de service");
+            ->with('success', "Le ticket {$ticket->ticket_number} a été notifié et supprimé de la file.");
     }
 
     /**
@@ -107,13 +149,12 @@ class TicketController extends Controller
      */
     public function complete(Ticket $ticket)
     {
-        $ticket->update([
-            'status' => 'completed',
-            'completed_at' => now(),
-        ]);
+        $serviceId = $ticket->service_id;
+        $ticket->delete();
+        $this->recalculateEstimatedWaitTimes($serviceId);
 
         return redirect()->route('admin.tickets.index')
-            ->with('success', "Le ticket {$ticket->ticket_number} a été terminé");
+            ->with('success', "Le ticket {$ticket->ticket_number} a été supprimé de la base de données.");
     }
 
     /**
@@ -121,9 +162,26 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
+        $serviceId = $ticket->service_id;
         $ticket->delete();
+        $this->recalculateEstimatedWaitTimes($serviceId);
+
         return redirect()->route('admin.tickets.index')
             ->with('success', 'Ticket supprimé');
+    }
+
+    protected function recalculateEstimatedWaitTimes(int $serviceId): void
+    {
+        $pendingTickets = Ticket::where('service_id', $serviceId)
+            ->where('status', 'pending')
+            ->orderBy('created_at')
+            ->get();
+
+        foreach ($pendingTickets as $index => $pendingTicket) {
+            $pendingTicket->update([
+                'estimated_wait_time' => 5 * ($index + 1),
+            ]);
+        }
     }
 
     /**

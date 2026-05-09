@@ -1,14 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\TicketLogController;
+use App\Models\Ticket;
 
 Route::get('/', function () {
-    return view('home');
+    $stats = [
+        'total' => Ticket::count(),
+        'pending' => Ticket::where('status', 'pending')->count(),
+        'serving' => Ticket::where('status', 'serving')->count(),
+        'average_wait' => round(Ticket::whereIn('status', ['pending', 'serving'])->avg('estimated_wait_time') ?: 0),
+    ];
+
+    return view('home', compact('stats'));
 })->name('home');
 
 Route::view('/about', 'about')->name('about');
@@ -39,6 +48,7 @@ Route::prefix('client')->name('client.')->group(function () {
 // ============================================
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
     // CRUD complet pour tous les modèles
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     Route::resource('tickets', TicketController::class)->except(['create', 'store']); // Sauf création publique
     Route::resource('services', ServiceController::class);
     Route::resource('agents', AgentController::class);
