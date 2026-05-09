@@ -10,9 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    private const MAX_ATTEMPTS = 5;
-    private const DECAY_SECONDS = 60;
-
     public function showLoginForm()
     {
         return view('auth.login');
@@ -21,22 +18,20 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+            'email' => 'required|email',
+            'password' => 'required|string',
         ]);
 
-        $throttleKey = $this->throttleKey($request);
+        $throttleKey = Str::lower($request->input('email')).'|'.$request->ip();
 
-        if (RateLimiter::tooManyAttempts($throttleKey, self::MAX_ATTEMPTS)) {
-            $seconds = RateLimiter::availableIn($throttleKey);
-
+        if (RateLimiter::tooManyAttempts($throttleKey, 5)) {
             throw ValidationException::withMessages([
-                'email' => "Trop de tentatives. Réessayez dans {$seconds} secondes.",
+                'email' => 'Trop de tentatives. Réessayez dans quelques minutes.',
             ]);
         }
 
         if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            RateLimiter::hit($throttleKey, self::DECAY_SECONDS);
+            RateLimiter::hit($throttleKey, 60);
 
             throw ValidationException::withMessages([
                 'email' => 'Identifiants invalides.',
@@ -44,7 +39,6 @@ class AuthController extends Controller
         }
 
         RateLimiter::clear($throttleKey);
-
         $request->session()->regenerate();
 
         return redirect()->intended(route('admin.tickets.index'));
@@ -58,13 +52,5 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('home');
-    }
-
-    /**
-     * Génère une clé unique pour limiter les tentatives de login
-     */
-    private function throttleKey(Request $request): string
-    {
-        return Str::transliterate(Str::lower($request->email)).'|'.$request->ip();
     }
 }
