@@ -7,7 +7,7 @@
     <div class="col-lg-8">
         <div class="card card-esprit">
             <div class="card-header bg-white py-3">
-                <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Ajouter un agent</h4>
+                <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Ajouter un Agent a votre choix </h4>
             </div>
             <div class="card-body">
                 <form action="{{ route('agents.store') }}" method="POST">
