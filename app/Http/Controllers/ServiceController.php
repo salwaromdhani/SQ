@@ -8,24 +8,26 @@ use Illuminate\Http\Request;
 class ServiceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of services
      */
     public function index(Request $request)
     {
         $services = Service::withCount('tickets')
-            ->when($request->input('search'), function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+            ->when($request->search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('description', 'like', "%{$search}%");
+                });
             })
             ->latest()
-            ->paginate(12)
+            ->paginate(10)
             ->withQueryString();
 
         return view('services.index', compact('services'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show create form
      */
     public function create()
     {
@@ -33,24 +35,21 @@ class ServiceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store new service
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'active' => 'boolean',
-        ]);
+        $data = $this->validateService($request);
 
-        Service::create($validated);
+        Service::create($data);
 
-        return redirect()->route('services.index')
+        return redirect()
+            ->route('services.index')
             ->with('success', 'Service créé avec succès');
     }
 
     /**
-     * Display the specified resource.
+     * Show single service
      */
     public function show(Service $service)
     {
@@ -58,7 +57,7 @@ class ServiceController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show edit form
      */
     public function edit(Service $service)
     {
@@ -66,30 +65,40 @@ class ServiceController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update service
      */
     public function update(Request $request, Service $service)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'active' => 'boolean',
-        ]);
+        $data = $this->validateService($request);
 
-        $service->update($validated);
+        $service->update($data);
 
-        return redirect()->route('services.index')
-            ->with('success', 'Service mis à jour');
+        return redirect()
+            ->route('services.index')
+            ->with('success', 'Service mis à jour avec succès');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete service
      */
     public function destroy(Service $service)
     {
         $service->delete();
 
-        return redirect()->route('services.index')
-            ->with('success', 'Service supprimé');
+        return redirect()
+            ->route('services.index')
+            ->with('success', 'Service supprimé avec succès');
+    }
+
+    /**
+     * Centralized validation (clean code)
+     */
+    private function validateService(Request $request): array
+    {
+        return $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'active' => ['boolean'],
+        ]);
     }
 }
