@@ -14,7 +14,7 @@
                     @csrf
                     
                     <div class="mb-3">
-                        <label class="form-label">Nom complet <span class="text-danger">*</span></label>
+                        <label class="form-label">Ecrit le Nom complet <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
                                value="{{ old('name') }}" required maxlength="100">
                         @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
