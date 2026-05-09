@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Créer un ticket - ESPRIT File d\'Attente')
+@section('title', 'Créer un ticket - SmartQueue')
 
 @section('content')
 <div class="space-y-10">
@@ -8,15 +8,15 @@
         <div class="grid gap-6 lg:grid-cols-[0.9fr_0.7fr] lg:items-center">
             <div>
                 <span class="inline-flex rounded-full bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo-700">Nouveau ticket</span>
-                <h1 class="mt-4 section-title text-slate-900">Créez votre ticket en quelques étapes simples.</h1>
-                <p class="section-subtitle">Remplissez le formulaire client, choisissez un service et obtenez votre place dans la file rapidement.</p>
+                <h1 class="mt-4 section-title text-slate-900">Obtenez votre numéro de file d'attente.</h1>
+                <p class="section-subtitle">Remplissez vos informations, choisissez le service souhaité et recevez votre ticket virtuel immédiatement.</p>
             </div>
             <div class="rounded-[1.75rem] border border-slate-200/80 bg-slate-50 p-6">
                 <p class="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Temps estimé</p>
-                <p class="mt-4 text-4xl font-semibold text-slate-900">5-10 min</p>
+                <p class="mt-4 text-4xl font-semibold text-slate-900">10-15 min</p>
                 <div class="mt-6 rounded-3xl bg-white p-4 text-sm text-slate-600 shadow-sm">
                     <p class="font-semibold text-slate-900">Notifications</p>
-                    <p class="mt-2 text-slate-600">Vous recevrez un email lorsque votre tour approche.</p>
+                    <p class="mt-2 text-slate-600">Vous recevrez une notification SMS/Email 5 minutes avant votre tour.</p>
                 </div>
             </div>
         </div>
@@ -63,9 +63,10 @@
 
             <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
                 <a href="{{ route('home') }}" class="btn-secondary w-full justify-center sm:w-auto">Retour</a>
-                <button type="submit" class="btn-primary w-full justify-center sm:w-auto">Créer mon ticket</button>
+                <button type="submit" class="btn-primary w-full justify-center sm:w-auto">Obtenir mon ticket</button>
             </div>
         </form>
     </section>
 </div>
+
 @endsection

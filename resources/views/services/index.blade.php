@@ -1,91 +1,76 @@
 @extends('layouts.app')
 
-@section('title', 'Liste des Services')
+@section('title', 'Gestion des services')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="fas fa-concierge-bell me-2"></i>Services</h2>
-    <a href="{{ route('services.create') }}" class="btn btn-esprit">
-        <i class="fas fa-plus me-1"></i>Nouveau Service
-    </a>
-</div>
+<div class="space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-indigo-600">Administration</p>
+            <h1 class="mt-2 text-3xl font-semibold text-slate-900">Services</h1>
+            <p class="mt-2 text-slate-600">Gérez les services disponibles et visualisez leur activité.</p>
+        </div>
+        <a href="{{ route('admin.services.create') }}" class="btn-primary">Nouveau service</a>
+    </div>
 
-<!-- Recherche -->
-<div class="card card-esprit mb-4">
-    <div class="card-body">
-        <form method="GET" action="{{ route('services.index') }}" class="row g-3">
-            <div class="col-md-8">
-                <input type="text" name="search" class="form-control" 
-                       placeholder="Rechercher un service..." 
-                       value="{{ request('search') }}">
+    @if(session('success'))
+        <div class="rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-900">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="rounded-3xl border border-rose-200 bg-rose-50 px-5 py-4 text-sm text-rose-900">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <div class="card-panel">
+        <form method="GET" action="{{ route('admin.services.index') }}" class="grid gap-4 lg:grid-cols-[1.5fr_0.8fr_0.8fr] items-end">
+            <div class="form-field">
+                <label for="search" class="form-label">Rechercher</label>
+                <input id="search" name="search" type="text" value="{{ request('search') }}" placeholder="Nom ou description" class="form-input" />
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-esprit w-100">
-                    <i class="fas fa-search"></i>
-                </button>
+            <div>
+                <button type="submit" class="btn-primary w-full">Rechercher</button>
             </div>
-            @if(request('search'))
-            <div class="col-md-2">
-                <a href="{{ route('services.index') }}" class="btn btn-outline-secondary w-100">
-                    <i class="fas fa-times"></i> Reset
-                </a>
+            <div>
+                <a href="{{ route('admin.services.index') }}" class="btn-secondary w-full">Réinitialiser</a>
             </div>
-            @endif
         </form>
     </div>
-</div>
 
-<!-- Messages -->
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show">
-    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-@if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show">
-    <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
-
-<!-- Tableau -->
-<div class="card card-esprit">
-    <div class="card-body p-0">
-        <table class="table table-hover mb-0">
-            <thead class="table-light">
+    <div class="card-panel overflow-x-auto">
+        <table class="min-w-full text-left">
+            <thead class="border-b border-slate-200 text-slate-700">
                 <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Statut</th>
-                    <th>Tickets</th>
-                    <th class="text-end">Actions</th>
+                    <th class="px-4 py-3">Nom</th>
+                    <th class="px-4 py-3">Description</th>
+                    <th class="px-4 py-3">Statut</th>
+                    <th class="px-4 py-3">Tickets</th>
+                    <th class="px-4 py-3 text-right">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-slate-200">
                 @forelse($services as $service)
                 <tr>
-                    <td><strong>{{ $service->name }}</strong></td>
-                    <td>{{ Str::limit($service->description, 50) ?? '–' }}</td>
-                    <td>
-                        @if($service->active)
-                            <span class="badge bg-success">Actif</span>
-                        @else
-                            <span class="badge bg-secondary">Inactif</span>
-                        @endif
+                    <td class="px-4 py-4 font-semibold text-slate-900">{{ $service->name }}</td>
+                    <td class="px-4 py-4 text-slate-600">{{ Illuminate\Support\Str::limit($service->description ?? 'Aucune description', 50) }}</td>
+                    <td class="px-4 py-4">
+                        <span class="inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] {{ $service->active ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600' }}">
+                            {{ $service->active ? 'Actif' : 'Inactif' }}
+                        </span>
                     </td>
-                    <td>{{ $service->tickets_count ?? 0 }}</td>
-                    <td class="text-end">
-                        <a href="{{ route('services.show', $service) }}" class="btn btn-sm btn-outline-primary">
+                    <td class="px-4 py-4 text-slate-700">{{ $service->tickets_count }}</td>
+                    <td class="px-4 py-4 text-right">
+                        <a href="{{ route('admin.services.show', $service) }}" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200">
                             <i class="fas fa-eye"></i>
                         </a>
-                        <a href="{{ route('services.edit', $service) }}" class="btn btn-sm btn-outline-warning">
+                        <a href="{{ route('admin.services.edit', $service) }}" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <form action="{{ route('services.destroy', $service) }}" method="POST" class="d-inline"
-                              onsubmit="return confirm('Supprimer ce service ?')">
+                        <form action="{{ route('admin.services.destroy', $service) }}" method="POST" class="inline" onsubmit="return confirm('Supprimer ce service ?')">
                             @csrf @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <button type="submit" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-rose-100 text-rose-700 transition hover:bg-rose-200">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -93,19 +78,15 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="text-center py-4 text-muted">
-                        <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
-                        Aucun service trouvé
-                    </td>
+                    <td colspan="5" class="px-4 py-16 text-center text-slate-500">Aucun service trouvé.</td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
-</div>
 
-<!-- Pagination -->
-<div class="mt-4">
-    {{ $services->links() }}
+    <div class="mt-6">
+        {{ $services->links() }}
+    </div>
 </div>
 @endsection

@@ -4,14 +4,14 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-    <div class="mb-10 rounded-[2rem] border border-white/10 bg-white/5 p-8 shadow-[0_30px_80px_-35px_rgba(15,23,42,0.95)] backdrop-blur-xl">
+    <div class="mb-10 rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 shadow-[0_30px_80px_-35px_rgba(15,23,42,0.95)] backdrop-blur-xl">
         <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
                 <h1 class="text-4xl font-bold text-white">File d'Attente en Temps Réel</h1>
-                <p class="mt-3 text-soft">Suivez l'activité de la file, consultez vos tickets et recevez une estimation précise.</p>
+                <p class="mt-3 text-white/70">Suivez l'activité de la file, consultez vos tickets et recevez une estimation précise.</p>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="{{ route('client.tickets.create') }}" class="btn-esprit">Prendre un ticket</a>
+                <a href="{{ route('client.tickets.create') }}" class="btn-primary">Prendre un ticket</a>
                 <a href="{{ route('home') }}" class="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/10 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/15">Retour à l'accueil</a>
             </div>
         </div>
@@ -87,7 +87,6 @@
             </table>
         </div>
     </div>
-</div>
 </div>
 
 <script>

@@ -82,7 +82,13 @@ const notificationElement = document.getElementById('notification');
 // Vérifier le statut toutes les 8-10 secondes
 setInterval(function() {
     fetch('{{ route("api.tickets.status", $ticket) }}')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                window.location.href = '{{ route("home") }}';
+                throw new Error('Ticket supprimé ou introuvable');
+            }
+            return response.json();
+        })
         .then(data => {
             // Mettre à jour la position
             if (positionElement) {

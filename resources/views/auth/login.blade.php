@@ -10,7 +10,7 @@
                 <i class="fas fa-user-lock text-2xl"></i>
             </div>
             <h2 class="text-3xl font-bold text-white">Connexion administrateur</h2>
-            <p class="mt-3 text-sm text-soft">Entrez vos identifiants pour accéder à l’espace admin sécurisé.</p>
+            <p class="mt-3 text-sm text-slate-400">Entrez vos identifiants pour accéder à l’espace admin sécurisé.</p>
         </div>
         <form class="space-y-6" action="{{ route('login') }}" method="POST">
             @csrf
@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            <button type="submit" class="btn-esprit w-full text-center">Se connecter</button>
+            <button type="submit" class="btn-primary w-full text-center">Se connecter</button>
         </form>
     </div>
 </div>

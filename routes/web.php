@@ -6,9 +6,17 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\TicketLogController;
+use App\Models\Ticket;
 
 Route::get('/', function () {
-    return view('home');
+    $stats = [
+        'total' => Ticket::count(),
+        'pending' => Ticket::where('status', 'pending')->count(),
+        'serving' => Ticket::where('status', 'serving')->count(),
+        'average_wait' => Ticket::whereIn('status', ['pending', 'serving'])->avg('estimated_wait_time') ?: 0,
+    ];
+
+    return view('home', compact('stats'));
 })->name('home');
 
 Route::view('/about', 'about')->name('about');

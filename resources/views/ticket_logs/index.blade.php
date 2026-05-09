@@ -3,95 +3,92 @@
 @section('title', 'Historique des Tickets')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2><i class="fas fa-history me-2"></i>Journal d'activité</h2>
-    <a href="{{ route('ticket-logs.create') }}" class="btn btn-esprit">
-        <i class="fas fa-plus me-1"></i>Ajouter une entrée
-    </a>
-</div>
+<div class="space-y-8">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+            <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Journal d'activité</p>
+            <h1 class="mt-2 text-3xl font-semibold text-slate-900">Historique des tickets</h1>
+        </div>
+        <a href="{{ route('ticket-logs.create') }}" class="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700">
+            <i class="fas fa-plus mr-2"></i>Ajouter une entrée
+        </a>
+    </div>
 
-<!-- Filtres -->
-<div class="card card-esprit mb-4">
-    <div class="card-body">
-        <form method="GET" action="{{ route('ticket-logs.index') }}" class="row g-3">
-            <div class="col-md-6">
-                <input type="number" name="ticket_id" class="form-control" 
-                       placeholder="Filtrer par ID de Ticket (ex: 1)" 
-                       value="{{ request('ticket_id') }}">
+    <div class="rounded-[2rem] border border-slate-200/70 bg-white p-6 shadow-sm">
+        <form method="GET" action="{{ route('ticket-logs.index') }}" class="grid gap-4 lg:grid-cols-[1.5fr_0.8fr_0.8fr] items-end">
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-700">ID Ticket</label>
+                <input type="number" name="ticket_id" value="{{ request('ticket_id') }}" placeholder="Filtrer par ID de Ticket" class="w-full rounded-3xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200" />
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-esprit w-100">
-                    <i class="fas fa-filter"></i>
-                </button>
-            </div>
+            <button type="submit" class="rounded-3xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700">
+                <i class="fas fa-filter mr-2"></i>Filtrer
+            </button>
             @if(request('ticket_id'))
-            <div class="col-md-2">
-                <a href="{{ route('ticket-logs.index') }}" class="btn btn-outline-secondary w-100">
-                    <i class="fas fa-times"></i> Reset
+                <a href="{{ route('ticket-logs.index') }}" class="inline-flex items-center justify-center rounded-3xl border border-slate-300 bg-slate-50 px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100">
+                    <i class="fas fa-times mr-2"></i>Réinitialiser
                 </a>
-            </div>
             @endif
         </form>
     </div>
-</div>
 
-<!-- Messages -->
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show">
-    <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-@endif
+    @if(session('success'))
+    <div class="rounded-3xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-900 shadow-sm">
+        <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
+    </div>
+    @endif
 
-<!-- Tableau -->
-<div class="card card-esprit">
-    <div class="card-body p-0">
-        <table class="table table-hover mb-0">
-            <thead class="table-light">
+    <div class="rounded-[2rem] border border-slate-200/70 bg-white p-6 shadow-sm overflow-x-auto">
+        <table class="min-w-full table-auto text-left">
+            <thead class="bg-slate-100 text-slate-700">
                 <tr>
-                    <th>ID Log</th>
-                    <th>Ticket Lié</th>
-                    <th>Action</th>
-                    <th>Ancienne Valeur</th>
-                    <th>Nouvelle Valeur</th>
-                    <th>Commentaire</th>
-                    <th class="text-end">Actions</th>
+                    <th class="border-b border-slate-200 px-4 py-3 text-sm font-semibold">ID Log</th>
+                    <th class="border-b border-slate-200 px-4 py-3 text-sm font-semibold">Ticket lié</th>
+                    <th class="border-b border-slate-200 px-4 py-3 text-sm font-semibold">Action</th>
+                    <th class="border-b border-slate-200 px-4 py-3 text-sm font-semibold">Ancienne valeur</th>
+                    <th class="border-b border-slate-200 px-4 py-3 text-sm font-semibold">Nouvelle valeur</th>
+                    <th class="border-b border-slate-200 px-4 py-3 text-sm font-semibold">Commentaire</th>
+                    <th class="border-b border-slate-200 px-4 py-3 text-right text-sm font-semibold">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-slate-200 text-slate-700">
                 @forelse($logs as $log)
-                <tr>
-                    <td>#{{ $log->id }}</td>
-                    <td>
-                        <a href="{{ route('admin.tickets.show', $log->ticket_id) }}" class="badge bg-secondary text-decoration-none">
+                <tr class="hover:bg-slate-50">
+                    <td class="px-4 py-4">#{{ $log->id }}</td>
+                    <td class="px-4 py-4">
+                        <a href="{{ route('admin.tickets.show', $log->ticket_id) }}" class="inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 transition hover:bg-slate-200">
                             TKT #{{ $log->ticket_id }}
                         </a>
                     </td>
-                    <td><span class="badge bg-info">{{ ucfirst(str_replace('_', ' ', $log->action)) }}</span></td>
-                    <td>{{ $log->old_value ?? '-' }}</td>
-                    <td>{{ $log->new_value ?? '-' }}</td>
-                    <td>{{ Str::limit($log->comment, 30) }}</td>
-                    <td class="text-end">
-                        <a href="{{ route('ticket-logs.show', $log) }}" class="btn btn-sm btn-outline-primary">
+                    <td class="px-4 py-4">
+                        <span class="inline-flex rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">{{ ucfirst(str_replace('_', ' ', $log->action)) }}</span>
+                    </td>
+                    <td class="px-4 py-4">{{ $log->old_value ?? '-' }}</td>
+                    <td class="px-4 py-4">{{ $log->new_value ?? '-' }}</td>
+                    <td class="px-4 py-4">{{ Str::limit($log->comment, 30) }}</td>
+                    <td class="px-4 py-4 text-right">
+                        <a href="{{ route('ticket-logs.show', $log) }}" class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 transition hover:bg-slate-200" title="Voir">
                             <i class="fas fa-eye"></i>
                         </a>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center py-4 text-muted">
-                        <i class="fas fa-history fa-2x mb-2 d-block"></i>
-                        Aucune activité enregistrée
+                    <td colspan="7" class="px-4 py-10 text-center text-slate-500">
+                        <div class="space-y-3">
+                            <div class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 text-slate-400">
+                                <i class="fas fa-history text-2xl"></i>
+                            </div>
+                            <p>Aucune activité enregistrée.</p>
+                        </div>
                     </td>
                 </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
-</div>
 
-<!-- Pagination -->
-<div class="mt-4">
-    {{ $logs->links() }}
+    <div class="mt-4">
+        {{ $logs->links() }}
+    </div>
 </div>
 @endsection
