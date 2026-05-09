@@ -11,8 +11,8 @@ class AgentController extends Controller
     public function index(Request $request)
     {
         $agents = Agent::with('service')
-            ->when($request->role, function ($query) use ($request) {
-                $query->where('role', $request->role);
+            ->when($request->role, function ($query, $role) {
+                $query->where('role', $role);
             })
             ->latest()
             ->paginate(10)
@@ -23,23 +23,19 @@ class AgentController extends Controller
 
     public function create()
     {
-        $services = Service::where('active', 1)->get();
+        $services = $this->getActiveServices();
+
         return view('agents.create', compact('services'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:agents,email',
-            'phone' => 'nullable|string|max:20',
-            'role' => 'required|in:admin,agent,superviseur',
-            'service_id' => 'nullable|exists:services,id',
-        ]);
+        $data = $this->validateAgent($request);
 
-        Agent::create($validated);
+        Agent::create($data);
 
-        return redirect()->route('agents.index')
+        return redirect()
+            ->route('agents.index')
             ->with('success', 'Agent ajouté avec succès.');
     }
 
@@ -50,23 +46,19 @@ class AgentController extends Controller
 
     public function edit(Agent $agent)
     {
-        $services = Service::where('active', 1)->get();
+        $services = $this->getActiveServices();
+
         return view('agents.edit', compact('agent', 'services'));
     }
 
     public function update(Request $request, Agent $agent)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:agents,email,' . $agent->id,
-            'phone' => 'nullable|string|max:20',
-            'role' => 'required|in:admin,agent,superviseur',
-            'service_id' => 'nullable|exists:services,id',
-        ]);
+        $data = $this->validateAgent($request, $agent->id);
 
-        $agent->update($validated);
+        $agent->update($data);
 
-        return redirect()->route('agents.show', $agent)
+        return redirect()
+            ->route('agents.show', $agent)
             ->with('success', 'Agent mis à jour.');
     }
 
@@ -74,7 +66,30 @@ class AgentController extends Controller
     {
         $agent->delete();
 
-        return redirect()->route('agents.index')
+        return redirect()
+            ->route('agents.index')
             ->with('success', 'Agent supprimé.');
+    }
+
+    /**
+     * Validation centralisée (clean code)
+     */
+    private function validateAgent(Request $request, $id = null): array
+    {
+        return $request->validate([
+            'name' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'email', 'unique:agents,email,' . $id],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'role' => ['required', 'in:admin,agent,superviseur'],
+            'service_id' => ['nullable', 'exists:services,id'],
+        ]);
+    }
+
+    /**
+     * Récupérer services actifs
+     */
+    private function getActiveServices()
+    {
+        return Service::where('active', 1)->get();
     }
 }
