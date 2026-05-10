@@ -18,6 +18,15 @@
   --color-info: #0EA5E9;
   --color-border: #F2D6D8;
   --color-card: rgba(255,255,255,0.94);
+
+  /* Variables pour le mode sombre */
+  --color-background-dark: #0F172A;
+  --color-surface-dark: #1E293B;
+  --color-surface-soft-dark: #334155;
+  --color-text-dark: #F1F5F9;
+  --color-muted-dark: #94A3B8;
+  --color-border-dark: #475569;
+  --color-card-dark: rgba(30,41,59,0.94);
 }
 
 @layer base {
@@ -36,6 +45,13 @@
     color: var(--color-text);
     min-height: 100vh;
     position: relative;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Mode sombre */
+  .dark body {
+    background: radial-gradient(circle at top left, rgba(185,28,28,0.08), transparent 24%), radial-gradient(circle at bottom right, rgba(220,38,38,0.04), transparent 20%), linear-gradient(180deg, var(--color-background-dark) 0%, #1E293B 100%);
+    color: var(--color-text-dark);
   }
 
   body::before {
@@ -45,6 +61,11 @@
     background: radial-gradient(circle at 15% 10%, rgba(185,28,28,0.08), transparent 16%), radial-gradient(circle at 85% 70%, rgba(220,38,38,0.06), transparent 18%);
     pointer-events: none;
     z-index: -1;
+    transition: background 0.3s ease;
+  }
+
+  .dark body::before {
+    background: radial-gradient(circle at 15% 10%, rgba(185,28,28,0.04), transparent 16%), radial-gradient(circle at 85% 70%, rgba(220,38,38,0.03), transparent 18%);
   }
 
   button,
@@ -80,9 +101,17 @@
     @apply inline-flex items-center justify-center rounded-3xl border border-[#F4CDD1] bg-white/95 px-6 py-3 text-sm font-semibold text-[#7F1D1D] shadow-sm transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-[#FEF2F2];
   }
 
+  .dark .btn-secondary {
+    @apply border-slate-700 bg-slate-800/95 text-slate-100 hover:bg-slate-700;
+  }
+
   .nav-link {
     @apply text-sm font-medium text-slate-700 transition duration-300 ease-out hover:text-[#B91C1C];
     position: relative;
+  }
+
+  .dark .nav-link {
+    @apply text-slate-300 hover:text-[#EF4444];
   }
 
   .nav-link::after {
@@ -117,6 +146,15 @@
 
   .feature-card {
     @apply rounded-[1.75rem] border border-[#F4CDD1] bg-white p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_60px_-40px_rgba(156,28,36,0.12)];
+  }
+
+  /* Dark mode support */
+  .dark .card-panel {
+    @apply border-slate-700/70 bg-slate-800/90;
+  }
+
+  .dark .feature-card {
+    @apply border-slate-600 bg-slate-800;
   }
 
   .section-header {

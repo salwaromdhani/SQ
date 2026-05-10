@@ -7,11 +7,18 @@ use App\Mail\TicketCreated;
 use App\Mail\TicketTurnNotification;
 use App\Models\Ticket;
 use App\Models\Service;
+use App\Services\SmsNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class TicketController extends Controller
 {
+    protected $smsService;
+
+    public function __construct(SmsNotificationService $smsService)
+    {
+        $this->smsService = $smsService;
+    }
     /**
      * Afficher la liste des tickets
      */
@@ -111,6 +118,11 @@ class TicketController extends Controller
         $ticket->refresh();
 
         Mail::to($ticket->email)->send(new TicketCreated($ticket));
+
+        // Envoyer notification SMS si le téléphone est fourni
+        if ($ticket->phone) {
+            $this->smsService->sendTicketCreatedNotification($ticket, $ticket->phone);
+        }
 
         return redirect()->route('client.tickets.show', $ticket)
             ->with('success', 'Ticket créé avec succès ! Un email de confirmation a été envoyé.');

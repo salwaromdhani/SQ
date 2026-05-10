@@ -11,15 +11,20 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function index()
-    {
-        $stats = [
-            'services' => Service::count(),
-            'agents' => Agent::count(),
-            'pending' => Ticket::where('status', 'pending')->count(),
-            'serving' => Ticket::where('status', 'serving')->count(),
-            'history' => TicketLog::count(),
-        ];
+{
+    $avgWait = \App\Models\Ticket::whereNotNull('created_at')
+        ->get()
+        ->avg(function ($ticket) {
+            return now()->diffInMinutes($ticket->created_at);
+        });
 
-        return view('admin.dashboard', compact('stats'));
-    }
+    $stats = [
+        'total' => \App\Models\Ticket::count(),
+        'pending' => \App\Models\Ticket::where('status', 'pending')->count(),
+        'serving' => \App\Models\Ticket::where('status', 'serving')->count(),
+        'average_wait' => round($avgWait ?? 0),
+    ];
+
+    return view('admin.dashboard', compact('stats'));
+}
 }

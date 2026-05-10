@@ -64,7 +64,12 @@
                 </div>
 
                 <div class="mt-8 text-center">
-                    <a href="{{ route('client.tickets.create') }}" class="btn-esprit">Créer un autre ticket</a>
+                    <div class="flex gap-4 justify-center">
+                        <a href="{{ route('tickets.qr-code.page', $ticket) }}" class="btn-esprit-secondary">
+                            <i class="fas fa-qrcode mr-2"></i>QR Code
+                        </a>
+                        <a href="{{ route('client.tickets.create') }}" class="btn-esprit">Créer un autre ticket</a>
+                    </div>
                 </div>
             </div>
         </div>

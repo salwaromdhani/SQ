@@ -6,13 +6,10 @@
 
     <title>@yield('title', "SmartQueue - Gestion de Files d'Attente")</title>
 
-    <!-- Tailwind CSS -->
     @vite('resources/css/app.css')
 
-    <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-          integrity="sha512-pY1Y9V8RueXzC0aQk8dmDDUzn3vDQ5oXqpk5ffiJeao5c2xO1Dq9U0hkBSEmXImGfM4XLs8Yg4jOJx5yVhDByQ=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
 </head>
@@ -27,23 +24,40 @@
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
 
             <a href="{{ route('home') }}"
-                   class="inline-flex items-center gap-3 text-lg font-semibold text-slate-900 transition hover:text-[#B91C1C]">
+               class="inline-flex items-center gap-3 text-lg font-semibold text-slate-900 transition hover:text-[#B91C1C]">
 
-                    <img src="{{ asset('images/logo.png') }}"
-                         alt="File d'Attente"
-                         class="h-11 w-11 rounded-2xl object-cover shadow-lg shadow-[#B91C1C]/20" />
+                <img src="{{ asset('images/logo.png') }}"
+                     alt="Logo"
+                     class="h-11 w-11 rounded-2xl object-cover shadow-lg shadow-[#B91C1C]/20" />
+
                 <span>File d'Attente</span>
             </a>
 
             <!-- Desktop menu -->
             <nav class="hidden items-center gap-4 md:flex">
 
-                <a href="{{ route('home') }}" class="nav-link">Accueil</a>
-                <a href="{{ route('about') }}" class="nav-link">À propos</a>
-                <a href="{{ route('contact') }}" class="nav-link">Contact</a>
+                @if(Route::has('home'))
+                    <a href="{{ route('home') }}" class="nav-link">Accueil</a>
+                @endif
+
+                @if(Route::has('about'))
+                    <a href="{{ route('about') }}" class="nav-link">À propos</a>
+                @endif
+
+                @if(Route::has('contact'))
+                    <a href="{{ route('contact') }}" class="nav-link">Contact</a>
+                @endif
 
                 @auth
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link">Admin</a>
+                    @if(auth()->user() && method_exists(auth()->user(), 'isAdmin') && auth()->user()->isAdmin())
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link">Admin</a>
+
+                    @elseif(auth()->user() && method_exists(auth()->user(), 'isEmployee') && auth()->user()->isEmployee())
+                        <a href="{{ route('employee.dashboard') }}" class="nav-link">Employé</a>
+
+                    @else
+                        <a href="{{ route('client.dashboard') }}" class="nav-link">Mon Espace</a>
+                    @endif
 
                     <form method="POST" action="{{ route('logout') }}" class="inline">
                         @csrf
@@ -61,44 +75,58 @@
 
             </nav>
 
-            <!-- Mobile button -->
-            <button id="mobile-menu-toggle"
-                    class="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-3 py-2 text-slate-700 shadow-sm transition hover:bg-slate-100 md:hidden">
-                <span class="sr-only">Ouvrir le menu</span>
-                <i class="fas fa-bars"></i>
-            </button>
+            <!-- Right buttons -->
+            <div class="flex items-center gap-3">
+
+                <!-- Theme -->
+                <button id="theme-toggle"
+                        class="rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-sm hover:bg-slate-100">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+
+                <!-- Mobile -->
+                <button id="mobile-menu-toggle"
+                        class="rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-sm md:hidden">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+            </div>
 
         </div>
 
         <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden border-t border-slate-200 bg-white/95 px-4 pb-5 shadow-sm md:hidden">
+        <div id="mobile-menu" class="hidden border-t border-slate-200 bg-white px-4 pb-5 md:hidden">
 
-            <div class="space-y-3 pt-4">
+            <div class="space-y-2 pt-4">
 
-                <a href="{{ route('home') }}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100">Accueil</a>
-                <a href="{{ route('about') }}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100">À propos</a>
-                <a href="{{ route('contact') }}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100">Contact</a>
+                @if(Route::has('home'))
+                    <a href="{{ route('home') }}" class="block p-3 rounded-xl hover:bg-slate-100">Accueil</a>
+                @endif
+
+                @if(Route::has('about'))
+                    <a href="{{ route('about') }}" class="block p-3 rounded-xl hover:bg-slate-100">À propos</a>
+                @endif
+
+                @if(Route::has('contact'))
+                    <a href="{{ route('contact') }}" class="block p-3 rounded-xl hover:bg-slate-100">Contact</a>
+                @endif
 
                 @auth
-                    <a href="{{ route('admin.tickets.index') }}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100">
-                        Admin
-                    </a>
+                    <a href="#" class="block p-3 rounded-xl hover:bg-slate-100">Dashboard</a>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="w-full rounded-2xl px-4 py-3 text-left hover:bg-slate-100">
+                        <button class="w-full text-left p-3 rounded-xl hover:bg-slate-100">
                             Déconnexion
                         </button>
                     </form>
                 @else
-                    @if(Route::has('login'))
-                        <a href="{{ route('login') }}" class="block rounded-2xl px-4 py-3 hover:bg-[#FEF2F2]">
-                            Connexion Admin
-                        </a>
-                    @endif
+                    <a href="{{ route('login') }}" class="block p-3 rounded-xl hover:bg-slate-100">
+                        Connexion
+                    </a>
 
                     <a href="{{ route('client.tickets.create') }}"
-                       class="block rounded-2xl bg-[#B91C1C] px-4 py-3 text-center text-white hover:bg-[#991B1B]">
+                       class="block p-3 rounded-xl bg-[#B91C1C] text-white text-center">
                         Créer un ticket
                     </a>
                 @endauth
@@ -116,21 +144,25 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-slate-200/80 bg-white/95 py-8">
+    <footer class="border-t border-slate-200 bg-white py-8">
 
-        <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+        <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 lg:flex-row lg:justify-between">
 
             <div>
-                <p class="text-sm font-semibold text-slate-900">SmartQueue</p>
-                <p class="mt-2 max-w-xl text-sm text-slate-500">
-                    Système moderne de gestion de files d'attente bancaires avec notifications temps réel.
+                <p class="font-semibold">SmartQueue</p>
+                <p class="text-sm text-slate-500">
+                    Système moderne de gestion de files d'attente.
                 </p>
             </div>
 
-            <div class="flex flex-wrap gap-3 text-sm text-slate-500">
-                <a href="{{ route('about') }}" class="hover:text-[#B91C1C]">À propos</a>
-                <span>•</span>
-                <a href="{{ route('contact') }}" class="hover:text-[#B91C1C]">Contact</a>
+            <div class="flex gap-4 text-sm text-slate-500">
+                @if(Route::has('about'))
+                    <a href="{{ route('about') }}" class="hover:text-[#B91C1C]">À propos</a>
+                @endif
+
+                @if(Route::has('contact'))
+                    <a href="{{ route('contact') }}" class="hover:text-[#B91C1C]">Contact</a>
+                @endif
             </div>
 
         </div>
@@ -141,16 +173,33 @@
 
 @vite('resources/js/app.js')
 
+<!-- JS -->
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const mobileToggle = document.getElementById('mobile-menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
+const html = document.documentElement;
+const toggle = document.getElementById('theme-toggle');
+const icon = document.getElementById('theme-icon');
 
-    if (mobileToggle && mobileMenu) {
-        mobileToggle.addEventListener('click', function () {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
+const theme = localStorage.getItem('theme') || 'light';
+
+if (theme === 'dark') {
+    html.classList.add('dark');
+    icon.classList.replace('fa-moon', 'fa-sun');
+}
+
+toggle?.addEventListener('click', () => {
+    const isDark = html.classList.toggle('dark');
+
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+    icon.classList.toggle('fa-sun', isDark);
+    icon.classList.toggle('fa-moon', !isDark);
+});
+
+const btn = document.getElementById('mobile-menu-toggle');
+const menu = document.getElementById('mobile-menu');
+
+btn?.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
 });
 </script>
 
