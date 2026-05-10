@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                <div id="notification" class="hidden rounded-[1.75rem] border border-sky-500/20 bg-sky-500/10 p-5 mt-8 text-sky-100">
+                <div id="notification" class="hidden rounded-[1.75rem] border border-[#DC2626]/20 bg-[#DC2626]/10 p-5 mt-8 text-white/90">
                     <p class="font-semibold">🔔 C'est votre tour !</p>
                     <p class="mt-2">Présentez-vous au guichet dès maintenant.</p>
                 </div>
@@ -127,7 +127,7 @@ setInterval(function() {
                 if (Notification.permission === 'granted') {
                     new Notification('File d\'attente - ' + data.ticket_number, {
                         body: 'C\'est votre tour ! Présentez-vous au guichet.',
-                        icon: '/images/logo.png'
+                        icon: '{{ asset("images/logo.png") }}'
                     });
                 }
 
