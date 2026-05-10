@@ -267,7 +267,7 @@
                 </table>
             </div>
             <div class="mt-3 text-end">
-                <a href="{{ route('tickets.index') }}" class="btn-esprit btn btn-sm">
+                <a href="{{ route('admin.tickets.index') }}" class="btn-esprit btn btn-sm">
                     Voir tous les tickets <i class="fas fa-arrow-right ms-1"></i>
                 </a>
             </div>
@@ -326,25 +326,25 @@
     <div class="section-title"><i class="fas fa-bolt me-2"></i>Actions Rapides</div>
     <div class="row g-3">
         <div class="col-6 col-md-3">
-            <a href="{{ route('tickets.create') }}" class="quick-action-btn w-100">
+            <a href="{{ route('client.tickets.create') }}" class="quick-action-btn w-100">
                 <i class="fas fa-plus-circle" style="color:#8B1E3F;"></i>
                 Nouveau Ticket
             </a>
         </div>
         <div class="col-6 col-md-3">
-            <a href="{{ route('tickets.index') }}" class="quick-action-btn w-100">
+            <a href="{{ route('admin.tickets.index') }}" class="quick-action-btn w-100">
                 <i class="fas fa-list" style="color:#3B82F6;"></i>
                 Tous les Tickets
             </a>
         </div>
         <div class="col-6 col-md-3">
-            <a href="{{ route('agents.index') }}" class="quick-action-btn w-100">
+            <a href="{{ route('admin.agents.index') }}" class="quick-action-btn w-100">
                 <i class="fas fa-users" style="color:#8B5CF6;"></i>
                 Gérer Agents
             </a>
         </div>
         <div class="col-6 col-md-3">
-            <a href="{{ route('services.index') }}" class="quick-action-btn w-100">
+            <a href="{{ route('admin.services.index')}}" class="quick-action-btn w-100">
                 <i class="fas fa-concierge-bell" style="color:#10B981;"></i>
                 Gérer Services
             </a>
