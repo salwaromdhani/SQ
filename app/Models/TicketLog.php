@@ -13,4 +13,23 @@ class TicketLog extends Model
     {
         return $this->belongsTo(Ticket::class);
     }
+
+    public function getDetailsAttribute(): ?string
+    {
+        if ($this->comment) {
+            return $this->comment;
+        }
+
+        $parts = [];
+
+        if ($this->old_value) {
+            $parts[] = "Avant : {$this->old_value}";
+        }
+
+        if ($this->new_value) {
+            $parts[] = "Après : {$this->new_value}";
+        }
+
+        return $parts ? implode(' / ', $parts) : null;
+    }
 }

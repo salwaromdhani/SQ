@@ -18,13 +18,13 @@ class AgentController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('agents.index', compact('agents'));
+        return view('admin.agents.index', compact('agents'));
     }
 
     public function create()
     {
         $services = Service::where('active', 1)->get();
-        return view('agents.create', compact('services'));
+        return view('admin.agents.create', compact('services'));
     }
 
     public function store(Request $request)
@@ -39,19 +39,19 @@ class AgentController extends Controller
 
         Agent::create($validated);
 
-        return redirect()->route('agents.index')
+        return redirect()->route('admin.agents.index')
             ->with('success', 'Agent ajouté avec succès.');
     }
 
     public function show(Agent $agent)
     {
-        return view('agents.show', compact('agent'));
+        return view('admin.agents.show', compact('agent'));
     }
 
     public function edit(Agent $agent)
     {
         $services = Service::where('active', 1)->get();
-        return view('agents.edit', compact('agent', 'services'));
+        return view('admin.agents.edit', compact('agent', 'services'));
     }
 
     public function update(Request $request, Agent $agent)
@@ -66,7 +66,7 @@ class AgentController extends Controller
 
         $agent->update($validated);
 
-        return redirect()->route('agents.show', $agent)
+        return redirect()->route('admin.agents.show', $agent)
             ->with('success', 'Agent mis à jour.');
     }
 
@@ -74,7 +74,7 @@ class AgentController extends Controller
     {
         $agent->delete();
 
-        return redirect()->route('agents.index')
+        return redirect()->route('admin.agents.index')
             ->with('success', 'Agent supprimé.');
     }
 }

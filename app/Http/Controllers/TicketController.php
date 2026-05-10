@@ -51,7 +51,9 @@ class TicketController extends Controller
             'completed' => Ticket::where('status', 'completed')->count(),
         ];
 
-        return view('tickets.index', compact('tickets', 'stats'));
+        $view = str_contains($request->route()->getName(), 'admin.') ? 'admin.tickets.index' : 'tickets.index';
+
+        return view($view, compact('tickets', 'stats'));
     }
 
     public function update(Request $request, Ticket $ticket)
@@ -126,7 +128,9 @@ class TicketController extends Controller
             ->where('created_at', '<=', $ticket->created_at)
             ->count();
 
-        return view('tickets.show', compact('ticket', 'position'));
+        $view = str_contains(request()->route()->getName(), 'admin.') ? 'admin.tickets.show' : 'tickets.show';
+
+        return view($view, compact('ticket', 'position'));
     }
 
     /**
