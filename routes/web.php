@@ -7,6 +7,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\AgentController;
 use App\Http\Controllers\TicketLogController;
 use App\Models\Ticket;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     $stats = [
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
     // Actions supplémentaires pour tickets
     Route::patch('/tickets/{ticket}/serve', [TicketController::class, 'serve'])->name('tickets.serve');
     Route::patch('/tickets/{ticket}/complete', [TicketController::class, 'complete'])->name('tickets.complete');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 // ============================================
