@@ -27,12 +27,11 @@
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
 
             <a href="{{ route('home') }}"
-               class="inline-flex items-center gap-3 text-lg font-semibold text-slate-900 transition hover:text-indigo-600">
+                   class="inline-flex items-center gap-3 text-lg font-semibold text-slate-900 transition hover:text-[#B91C1C]">
 
-                <img src="{{ asset('images/logo.png') }}"
-                     alt="File d'Attente"
-                     class="h-11 w-11 rounded-2xl object-cover shadow-lg shadow-indigo-500/20" />
-
+                    <img src="{{ asset('images/logo.png') }}"
+                         alt="File d'Attente"
+                         class="h-11 w-11 rounded-2xl object-cover shadow-lg shadow-[#B91C1C]/20" />
                 <span>File d'Attente</span>
             </a>
 
@@ -93,13 +92,13 @@
                     </form>
                 @else
                     @if(Route::has('login'))
-                        <a href="{{ route('login') }}" class="block rounded-2xl px-4 py-3 hover:bg-slate-100">
+                        <a href="{{ route('login') }}" class="block rounded-2xl px-4 py-3 hover:bg-[#FEF2F2]">
                             Connexion Admin
                         </a>
                     @endif
 
                     <a href="{{ route('client.tickets.create') }}"
-                       class="block rounded-2xl bg-indigo-600 px-4 py-3 text-center text-white hover:bg-indigo-700">
+                       class="block rounded-2xl bg-[#B91C1C] px-4 py-3 text-center text-white hover:bg-[#991B1B]">
                         Créer un ticket
                     </a>
                 @endauth
@@ -129,9 +128,9 @@
             </div>
 
             <div class="flex flex-wrap gap-3 text-sm text-slate-500">
-                <a href="{{ route('about') }}" class="hover:text-indigo-600">À propos</a>
+                <a href="{{ route('about') }}" class="hover:text-[#B91C1C]">À propos</a>
                 <span>•</span>
-                <a href="{{ route('contact') }}" class="hover:text-indigo-600">Contact</a>
+                <a href="{{ route('contact') }}" class="hover:text-[#B91C1C]">Contact</a>
             </div>
 
         </div>
