@@ -29,11 +29,11 @@
             <a href="{{ route('home') }}"
                class="inline-flex items-center gap-3 text-lg font-semibold text-slate-900 transition hover:text-indigo-600">
 
-                <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/20">
-                    <i class="fas fa-ticket-alt"></i>
-                </span>
+                <img src="{{ asset('images/logo.png') }}"
+                     alt="File d'Attente"
+                     class="h-11 w-11 rounded-2xl object-cover shadow-lg shadow-indigo-500/20" />
 
-                <span>SmartQueue</span>
+                <span>File d'Attente</span>
             </a>
 
             <!-- Desktop menu -->
