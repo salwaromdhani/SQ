@@ -44,7 +44,7 @@
         <div class="space-y-4">
             @forelse($logs as $log)
                 <div class="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                    <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">
                         <i class="fas fa-history text-lg"></i>
                     </div>
                     <div class="flex-1">

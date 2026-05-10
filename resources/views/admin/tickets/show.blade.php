@@ -94,7 +94,7 @@
                     <div class="space-y-3">
                         @foreach($ticket->logs()->latest()->get() as $log)
                             <div class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <div class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-indigo-700">
+                                <div class="flex h-8 w-8 items-center justify-center rounded-full bg-[#FEE2E2] text-[#B91C1C]">
                                     <i class="fas fa-history text-sm"></i>
                                 </div>
                                 <div class="flex-1">

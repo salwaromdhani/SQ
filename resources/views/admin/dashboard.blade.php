@@ -15,31 +15,31 @@
             <h2 class="text-xl font-semibold text-slate-900">Fonctionnalités de l'administrateur</h2>
             <ul class="mt-6 space-y-4 text-slate-700">
                 <li class="flex gap-3">
-                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">1</span>
+                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">1</span>
                     <span>Se connecter à l'espace admin sécurisé.</span>
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">2</span>
+                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">2</span>
                     <span>Gérer les services disponibles et leur activation.</span>
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">3</span>
+                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">3</span>
                     <span>Gérer les agents et leurs affectations aux services.</span>
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">4</span>
+                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">4</span>
                     <span>Gérer les tickets en attente, en cours ou terminés.</span>
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">5</span>
+                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">5</span>
                     <span>Appeler un ticket pour le passer en service.</span>
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">6</span>
+                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">6</span>
                     <span>Clôturer un ticket une fois le service terminé.</span>
                 </li>
                 <li class="flex gap-3">
-                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">7</span>
+                    <span class="mt-1 inline-flex h-8 w-8 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">7</span>
                     <span>Consulter l'historique des actions et des modifications de tickets.</span>
                 </li>
             </ul>

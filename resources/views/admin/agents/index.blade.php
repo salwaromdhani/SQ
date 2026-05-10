@@ -43,7 +43,7 @@
             @forelse($agents as $agent)
                 <div class="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                     <div class="flex items-center gap-4">
-                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FEE2E2] text-[#B91C1C]">
                             <i class="fas fa-user-tie text-lg"></i>
                         </div>
                         <div>
