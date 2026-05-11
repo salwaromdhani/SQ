@@ -13,6 +13,7 @@ class ServiceController extends Controller
     public function index(Request $request)
     {
         $services = Service::withCount('tickets')
+<<<<<<< HEAD
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
@@ -24,6 +25,17 @@ class ServiceController extends Controller
             ->withQueryString();
 
         return view('services.index', compact('services'));
+=======
+            ->when($request->input('search'), function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(12)
+            ->withQueryString();
+
+        return view('admin.services.index', compact('services'));
+>>>>>>> feature/agents-module
     }
 
     /**
@@ -31,7 +43,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        return view('services.create');
+        return view('admin.services.create');
     }
 
     /**
@@ -43,8 +55,12 @@ class ServiceController extends Controller
 
         Service::create($data);
 
+<<<<<<< HEAD
         return redirect()
             ->route('services.index')
+=======
+        return redirect()->route('admin.services.index')
+>>>>>>> feature/agents-module
             ->with('success', 'Service créé avec succès');
     }
 
@@ -53,7 +69,7 @@ class ServiceController extends Controller
      */
     public function show(Service $service)
     {
-        return view('services.show', compact('service'));
+        return view('admin.services.show', compact('service'));
     }
 
     /**
@@ -61,7 +77,7 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        return view('services.edit', compact('service'));
+        return view('admin.services.edit', compact('service'));
     }
 
     /**
@@ -73,9 +89,14 @@ class ServiceController extends Controller
 
         $service->update($data);
 
+<<<<<<< HEAD
         return redirect()
             ->route('services.index')
             ->with('success', 'Service mis à jour avec succès');
+=======
+        return redirect()->route('admin.services.index')
+            ->with('success', 'Service mis à jour');
+>>>>>>> feature/agents-module
     }
 
     /**
@@ -85,6 +106,7 @@ class ServiceController extends Controller
     {
         $service->delete();
 
+<<<<<<< HEAD
         return redirect()
             ->route('services.index')
             ->with('success', 'Service supprimé avec succès');
@@ -100,5 +122,9 @@ class ServiceController extends Controller
             'description' => ['nullable', 'string'],
             'active' => ['boolean'],
         ]);
+=======
+        return redirect()->route('admin.services.index')
+            ->with('success', 'Service supprimé');
+>>>>>>> feature/agents-module
     }
 }

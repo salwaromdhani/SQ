@@ -32,7 +32,7 @@
         </div>
         <div class="card-esprit p-6">
             <p class="text-sm uppercase tracking-[0.24em] text-white/60">Temps moyen</p>
-            <p id="avg-wait" class="mt-4 text-4xl font-bold text-white">{{ $tickets->avg('estimated_wait_time') ?: 0 }}</p>
+            <p id="avg-wait" class="mt-4 text-4xl font-bold text-white">{{ round($tickets->avg('estimated_wait_time')) ?: 0 }}</p>
         </div>
     </div>
 

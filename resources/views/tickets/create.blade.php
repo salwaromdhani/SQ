@@ -7,7 +7,11 @@
     <section class="rounded-[2rem] bg-white p-8 shadow-[0_30px_80px_-45px_rgba(15,23,42,0.12)]">
         <div class="grid gap-6 lg:grid-cols-[0.9fr_0.7fr] lg:items-center">
             <div>
+<<<<<<< HEAD
                 <span class="inline-flex rounded-full bg-indigo-100 px-4 py-2 text-sm font-semibold text-indigo-700">Nouveau ticket</span>
+=======
+                <span class="inline-flex rounded-full bg-[#FEE2E2] px-4 py-2 text-sm font-semibold text-[#B91C1C]">Nouveau ticket</span>
+>>>>>>> feature/agents-module
                 <h1 class="mt-4 section-title text-slate-900">Obtenez votre numéro de file d'attente.</h1>
                 <p class="section-subtitle">Remplissez vos informations, choisissez le service souhaité et recevez votre ticket virtuel immédiatement.</p>
             </div>

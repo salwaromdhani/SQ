@@ -3,7 +3,7 @@ $types = [
     'success' => 'bg-emerald-50 border-emerald-100 text-emerald-700',
     'warning' => 'bg-amber-50 border-amber-100 text-amber-800',
     'danger' => 'bg-rose-50 border-rose-100 text-rose-700',
-    'info' => 'bg-sky-50 border-sky-100 text-sky-700',
+    'info' => 'bg-[#FEE2E2] border-[#F4CDD1] text-[#991B1B]',
 ];
 $alertClass = $types[$type ?? 'info'] ?? $types['info'];
 @endphp

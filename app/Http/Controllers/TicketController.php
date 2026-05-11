@@ -7,11 +7,18 @@ use App\Mail\TicketCreated;
 use App\Mail\TicketTurnNotification;
 use App\Models\Ticket;
 use App\Models\Service;
+use App\Services\SmsNotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class TicketController extends Controller
 {
+    protected $smsService;
+
+    public function __construct(SmsNotificationService $smsService)
+    {
+        $this->smsService = $smsService;
+    }
     /**
      * Afficher la liste des tickets
      */
@@ -51,7 +58,13 @@ class TicketController extends Controller
             'completed' => Ticket::where('status', 'completed')->count(),
         ];
 
+<<<<<<< HEAD
         return view('tickets.index', compact('tickets', 'stats'));
+=======
+        $view = str_contains($request->route()->getName(), 'admin.') ? 'admin.tickets.index' : 'tickets.index';
+
+        return view($view, compact('tickets', 'stats'));
+>>>>>>> feature/agents-module
     }
 
     public function update(Request $request, Ticket $ticket)
@@ -92,6 +105,7 @@ class TicketController extends Controller
         // Générer un numéro de ticket unique
         $ticketNumber = 'TKT-' . strtoupper(substr(uniqid(), -6));
 
+<<<<<<< HEAD
         // Calculer le temps d'attente estimé
         $pendingTickets = Ticket::where('service_id', $request->service_id)
             ->where('status', 'pending')
@@ -103,6 +117,9 @@ class TicketController extends Controller
 
         $estimatedTime = ($pendingTickets + ($hasActiveServing ? 1 : 0)) * 5; // 5 minutes par étape de service
 
+=======
+        // Créer le ticket avec une estimation provisoire, puis recalculer la file entière
+>>>>>>> feature/agents-module
         $ticket = Ticket::create([
             'ticket_number' => $ticketNumber,
             'full_name' => $validated['full_name'],
@@ -112,10 +129,18 @@ class TicketController extends Controller
             'service_id' => $validated['service_id'],
             'status' => 'pending',
             'priority' => 'normal',
-            'estimated_wait_time' => $estimatedTime,
+            'estimated_wait_time' => 0,
         ]);
 
+        $this->recalculateEstimatedWaitTimes($ticket->service_id);
+        $ticket->refresh();
+
         Mail::to($ticket->email)->send(new TicketCreated($ticket));
+
+        // Envoyer notification SMS si le téléphone est fourni
+        if ($ticket->phone) {
+            $this->smsService->sendTicketCreatedNotification($ticket, $ticket->phone);
+        }
 
         return redirect()->route('client.tickets.show', $ticket)
             ->with('success', 'Ticket créé avec succès ! Un email de confirmation a été envoyé.');
@@ -133,7 +158,9 @@ class TicketController extends Controller
             ->where('created_at', '<=', $ticket->created_at)
             ->count();
 
-        return view('tickets.show', compact('ticket', 'position'));
+        $view = str_contains(request()->route()->getName(), 'admin.') ? 'admin.tickets.show' : 'tickets.show';
+
+        return view($view, compact('ticket', 'position'));
     }
 
     /**
@@ -141,15 +168,14 @@ class TicketController extends Controller
      */
     public function serve(Ticket $ticket)
     {
-        $ticket->update([
-            'status' => 'serving',
-            'started_at' => now(),
-        ]);
-
         Mail::to($ticket->email)->send(new TicketTurnNotification($ticket));
 
+        $serviceId = $ticket->service_id;
+        $ticket->delete();
+        $this->recalculateEstimatedWaitTimes($serviceId);
+
         return redirect()->route('admin.tickets.index')
-            ->with('success', "Le ticket {$ticket->ticket_number} est maintenant en cours de service");
+            ->with('success', "Le ticket {$ticket->ticket_number} a été notifié et supprimé de la file.");
     }
 
     /**
@@ -157,13 +183,12 @@ class TicketController extends Controller
      */
     public function complete(Ticket $ticket)
     {
-        $ticket->update([
-            'status' => 'completed',
-            'completed_at' => now(),
-        ]);
+        $serviceId = $ticket->service_id;
+        $ticket->delete();
+        $this->recalculateEstimatedWaitTimes($serviceId);
 
         return redirect()->route('admin.tickets.index')
-            ->with('success', "Le ticket {$ticket->ticket_number} a été terminé");
+            ->with('success', "Le ticket {$ticket->ticket_number} a été supprimé de la base de données.");
     }
 
     /**
@@ -171,9 +196,26 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
+        $serviceId = $ticket->service_id;
         $ticket->delete();
+        $this->recalculateEstimatedWaitTimes($serviceId);
+
         return redirect()->route('admin.tickets.index')
             ->with('success', 'Ticket supprimé');
+    }
+
+    protected function recalculateEstimatedWaitTimes(int $serviceId): void
+    {
+        $pendingTickets = Ticket::where('service_id', $serviceId)
+            ->where('status', 'pending')
+            ->orderBy('created_at')
+            ->get();
+
+        foreach ($pendingTickets as $index => $pendingTicket) {
+            $pendingTicket->update([
+                'estimated_wait_time' => 5 * ($index + 1),
+            ]);
+        }
     }
 
     /**

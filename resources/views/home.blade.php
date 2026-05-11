@@ -23,8 +23,8 @@
                     </div>
                 </div>
                 <div class="rounded-[2rem] border border-white/10 bg-white/10 p-8 shadow-[0_30px_80px_-50px_rgba(0,0,0,0.35)] backdrop-blur-xl">
-                    <div class="mb-6 flex items-center gap-4 rounded-3xl bg-slate-950/80 p-5">
-                        <div class="inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-indigo-500 text-white shadow-lg shadow-indigo-500/20">
+                    <div class="mb-6 flex items-center gap-4 rounded-3xl bg-[#7F1D1D]/20 p-5">
+                        <div class="inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-[#B91C1C] text-white shadow-lg shadow-[#B91C1C]/20">
                             <i class="fas fa-chart-line text-xl"></i>
                         </div>
                         <div>
@@ -57,21 +57,21 @@
 
     <section class="grid gap-6 lg:grid-cols-3">
         <div class="feature-card">
-            <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-indigo-50 text-indigo-600">
+            <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-[#FEE2E2] text-[#B91C1C]">
                 <i class="fas fa-ticket-alt text-xl"></i>
             </div>
             <h2 class="text-2xl font-semibold text-slate-900">Prise de ticket rapide</h2>
             <p class="mt-3 text-slate-600">Un formulaire simplifié pour obtenir votre numéro de file en quelques secondes.</p>
         </div>
         <div class="feature-card">
-            <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-sky-50 text-sky-600">
+            <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-[#FEE2E2] text-[#B91C1C]">
                 <i class="fas fa-bell text-xl"></i>
             </div>
             <h2 class="text-2xl font-semibold text-slate-900">Notifications SMS/Email</h2>
             <p class="mt-3 text-slate-600">Recevez une alerte lorsque votre tour approche pour ne pas manquer votre passage.</p>
         </div>
         <div class="feature-card">
-            <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-emerald-50 text-emerald-600">
+            <div class="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-[#FEE2E2] text-[#B91C1C]">
                 <i class="fas fa-chart-pie text-xl"></i>
             </div>
             <h2 class="text-2xl font-semibold text-slate-900">Suivi temps réel</h2>

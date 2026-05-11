@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Service affecté</label>
+                        <label class="form-label"> les Services affecté</label>
                         <select name="service_id" class="form-select @error('service_id') is-invalid @enderror">
                             <option value="">-- Non affecté --</option>
                             @foreach($services as $service)

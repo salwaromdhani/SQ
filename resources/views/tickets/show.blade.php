@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                <div id="notification" class="hidden rounded-[1.75rem] border border-sky-500/20 bg-sky-500/10 p-5 mt-8 text-sky-100">
+                <div id="notification" class="hidden rounded-[1.75rem] border border-[#DC2626]/20 bg-[#DC2626]/10 p-5 mt-8 text-white/90">
                     <p class="font-semibold">🔔 C'est votre tour !</p>
                     <p class="mt-2">Présentez-vous au guichet dès maintenant.</p>
                 </div>
@@ -64,7 +64,12 @@
                 </div>
 
                 <div class="mt-8 text-center">
-                    <a href="{{ route('client.tickets.create') }}" class="btn-esprit">Créer un autre ticket</a>
+                    <div class="flex gap-4 justify-center">
+                        <a href="{{ route('tickets.qr-code.page', $ticket) }}" class="btn-esprit-secondary">
+                            <i class="fas fa-qrcode mr-2"></i>QR Code
+                        </a>
+                        <a href="{{ route('client.tickets.create') }}" class="btn-esprit">Créer un autre ticket</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,7 +132,7 @@ setInterval(function() {
                 if (Notification.permission === 'granted') {
                     new Notification('File d\'attente - ' + data.ticket_number, {
                         body: 'C\'est votre tour ! Présentez-vous au guichet.',
-                        icon: '/images/logo.png'
+                        icon: '{{ asset("images/logo.png") }}'
                     });
                 }
 

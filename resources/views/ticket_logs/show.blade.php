@@ -147,7 +147,7 @@ setInterval(function() {
                     if (Notification.permission === 'granted') {
                         new Notification('🎫 File d\'attente - {{ $ticket->ticket_number }}', {
                             body: 'C\'est votre tour ! Présentez-vous au guichet {{ $ticket->service->name }}.',
-                            icon: '/logo.png',
+                            icon: '{{ asset("images/logo.png") }}',
                             requireInteraction: true
                         });
                     }
