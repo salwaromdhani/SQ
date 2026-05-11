@@ -18,11 +18,7 @@ Route::get('/', function () {
         'total' => Ticket::count(),
         'pending' => Ticket::where('status', 'pending')->count(),
         'serving' => Ticket::where('status', 'serving')->count(),
-<<<<<<< HEAD
-        'average_wait' => Ticket::whereIn('status', ['pending', 'serving'])->avg('estimated_wait_time') ?: 0,
-=======
-        'average_wait' => round(Ticket::whereIn('status', ['pending', 'serving'])->avg('estimated_wait_time') ?: 0),
->>>>>>> feature/agents-module
+'average_wait' => round(Ticket::whereIn('status', ['pending', 'serving'])->avg('estimated_wait_time') ?: 0),
     ];
 
     return view('home', compact('stats'));
