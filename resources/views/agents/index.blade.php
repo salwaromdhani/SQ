@@ -99,11 +99,7 @@
                         <div class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 text-slate-400">
                             <i class="fas fa-inbox text-2xl"></i>
                         </div>
-<<<<<<< HEAD
                         <p>Aucun agent trouvé.</p>
-=======
-                        <p>Aucun agent trouver</p>
->>>>>>> feature/agents-module
                     </div>
                 </td>
             </tr>

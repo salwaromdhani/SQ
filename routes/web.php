@@ -15,11 +15,11 @@ use App\Models\Ticket;
 
 Route::get('/', function () {
     $stats = [
-    'total' => Ticket::count(),
-    'pending' => Ticket::where('status', 'pending')->count(),
-    'serving' => Ticket::where('status', 'serving')->count(),
-    'average_wait' => round(Ticket::whereIn('status', ['pending', 'serving'])->avg('estimated_wait_time') ?: 0),
-];
+        'total' => Ticket::count(),
+        'pending' => Ticket::where('status', 'pending')->count(),
+        'serving' => Ticket::where('status', 'serving')->count(),
+        'average_wait' => round(Ticket::whereIn('status', ['pending', 'serving'])->avg('estimated_wait_time') ?: 0),
+    ];
 
     return view('home', compact('stats'));
 })->name('home');
@@ -110,7 +110,7 @@ Route::middleware(['auth'])->group(function () {
 // ============================================
 Route::get('/api/tickets/{ticket}/status', [TicketController::class, 'apiStatus'])->name('api.tickets.status');
 // ============================================
-// THÈME (BASCULER MODE SOMBRE/CLair)
+// THÈME (BASCULER MODE SOMBRE/CLAIR)
 // ============================================
 Route::post('/theme/toggle', function () {
     // Le middleware DarkModeMiddleware gère cette route

@@ -3,11 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
-    <title>@yield('title', 'SmartQueue - Gestion de Files d\'Attente')</title>
-=======
->>>>>>> feature/agents-module
-
     <title>@yield('title', "SmartQueue - Gestion de Files d'Attente")</title>
 
     @vite('resources/css/app.css')
@@ -19,18 +14,6 @@
 </head>
 
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-<<<<<<< HEAD
-    <div class="min-h-screen flex flex-col">
-        <header class="sticky top-0 z-40 border-b border-slate-200/70 bg-white/85 backdrop-blur-xl shadow-sm">
-            <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                <a href="{{ route('home') }}" class="inline-flex items-center gap-3 text-lg font-semibold text-slate-900 transition hover:text-indigo-600">
-                    <span class="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/20">
-                        <i class="fas fa-ticket-alt"></i>
-                    </span>
-                    <span>SmartQueue</span>
-                </a>
-=======
->>>>>>> feature/agents-module
 
 <div class="min-h-screen flex flex-col">
 
@@ -113,22 +96,6 @@
         <!-- Mobile menu -->
         <div id="mobile-menu" class="hidden border-t border-slate-200 bg-white px-4 pb-5 md:hidden">
 
-<<<<<<< HEAD
-        <footer class="border-t border-slate-200/80 bg-white/95 py-8">
-            <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-                <div>
-                    <p class="text-sm font-semibold text-slate-900">SmartQueue</p>
-                    <p class="mt-2 max-w-xl text-sm text-slate-500">Système moderne de gestion de files d'attente bancaires avec notifications temps réel.</p>
-                </div>
-                <div class="flex flex-wrap gap-3 text-sm text-slate-500">
-                    <a href="{{ route('about') }}" class="transition hover:text-indigo-600">À propos</a>
-                    <span class="text-slate-300">•</span>
-                    <a href="{{ route('contact') }}" class="transition hover:text-indigo-600">Contact</a>
-                </div>
-            </div>
-        </footer>
-    </div>
-=======
             <div class="space-y-2 pt-4">
 
                 @if(Route::has('home'))
@@ -234,7 +201,6 @@ btn?.addEventListener('click', () => {
     menu.classList.toggle('hidden');
 });
 </script>
->>>>>>> feature/agents-module
 
 </body>
 </html>

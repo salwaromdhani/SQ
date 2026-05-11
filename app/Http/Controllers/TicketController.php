@@ -58,13 +58,9 @@ class TicketController extends Controller
             'completed' => Ticket::where('status', 'completed')->count(),
         ];
 
-<<<<<<< HEAD
-        return view('tickets.index', compact('tickets', 'stats'));
-=======
         $view = str_contains($request->route()->getName(), 'admin.') ? 'admin.tickets.index' : 'tickets.index';
 
         return view($view, compact('tickets', 'stats'));
->>>>>>> feature/agents-module
     }
 
     public function update(Request $request, Ticket $ticket)
@@ -105,7 +101,6 @@ class TicketController extends Controller
         // Générer un numéro de ticket unique
         $ticketNumber = 'TKT-' . strtoupper(substr(uniqid(), -6));
 
-<<<<<<< HEAD
         // Calculer le temps d'attente estimé
         $pendingTickets = Ticket::where('service_id', $request->service_id)
             ->where('status', 'pending')
@@ -117,9 +112,6 @@ class TicketController extends Controller
 
         $estimatedTime = ($pendingTickets + ($hasActiveServing ? 1 : 0)) * 5; // 5 minutes par étape de service
 
-=======
-        // Créer le ticket avec une estimation provisoire, puis recalculer la file entière
->>>>>>> feature/agents-module
         $ticket = Ticket::create([
             'ticket_number' => $ticketNumber,
             'full_name' => $validated['full_name'],
